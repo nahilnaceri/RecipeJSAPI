@@ -1,0 +1,28 @@
+{
+  "name": "foodsearch",
+  "version": "1.0.0",
+  "description": "Js web app to get recepies",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nahilnaceri/RecipeJSAPI.git"
+  },
+  "author": "chafik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nahilnaceri/RecipeJSAPI/issues"
+  },
+  "homepage": "https://github.com/nahilnaceri/RecipeJSAPI#readme",
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.1",
+    "sass": "^1.32.0"
+  },
+  "dependencies": {
+    "core-js": "^3.8.2",
+    "regenerator-runtime": "^0.13.7"
+  }
+}
