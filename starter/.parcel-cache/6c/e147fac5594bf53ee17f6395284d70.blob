@@ -1,0 +1,26 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _parentEl = new WeakMap();
+
+class SearchView {
+  constructor() {
+    _parentEl.set(this, {
+      writable: true,
+      value: document.querySelector('.search')
+    });
+  }
+
+  getQuery() {
+    return;
+  }
+
+}
+
+var _default = new SearchView();
+
+exports.default = _default;

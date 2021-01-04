@@ -3,10 +3,12 @@ import { mark } from 'regenerator-runtime';
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
+  #errorMessage = `Could not find recipe`;
+  #successMessage = '';
   render(data) {
     this.#data = data;
 
-    this.#parentElement.innerHTML = '';
+    this.#clear();
 
     console.log('not rendered');
     const markup = this.#generateMarkup();
@@ -14,7 +16,45 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML('beforeend', markup);
     console.log('rendered');
   }
+  renderSpinner() {
+    const markUp = `<div class="spinner">
+    <svg>
+      <use href="${icons}#icon-loader"></use>
+    </svg>
+  </div>`;
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('beforeend', markUp);
+  }
 
+  renderError(message = this.#errorMessage) {
+    this.#clear();
+    const markUp = `<div class="error">
+    <div>
+      <svg>
+        <use href="${icons}#icon-alert-triangle"></use>
+      </svg>
+    </div>
+    <p>${message}</p>
+  </div> `;
+    this.#parentElement.insertAdjacentHTML('beforeend', markUp);
+  }
+
+  renderSuccessMessage(message = this.#successMessage) {
+    this.#clear();
+    const markUp = `<div class="message">
+    <div>
+      <svg>
+        <use href="${icons}#icon-smile"></use>
+      </svg>
+    </div>
+    <p>${message}</p>
+  </div> `;
+    this.#parentElement.insertAdjacentHTML('beforeend', markUp);
+  }
+
+  #clear() {
+    this.#parentElement.innerHTML = '';
+  }
   #generateMarkup() {
     return `<figure class="recipe__fig">
     <img src="${this.#data.image}" alt="Tomato" class="recipe__img" />
@@ -109,6 +149,10 @@ class RecipeView {
         ${ing.description}
       </div>
     </li>`;
+  }
+
+  addHandlerRender(meth) {
+    ['hashchange', 'load'].forEach(el => window.addEventListener(el, meth));
   }
 }
 
