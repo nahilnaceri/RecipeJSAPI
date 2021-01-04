@@ -1,0 +1,83 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getSpecificPage = exports.loadSearchResults = exports.loadRecipe = exports.state = void 0;
+
+var _regeneratorRuntime = require("regenerator-runtime");
+
+var _config = require("./config.js");
+
+var _helpers = require("./helpers.js");
+
+const state = {
+  recipe: {},
+  search: {
+    query: '',
+    results: [],
+    resultsPerPage: _config.RES_PER_PAGE,
+    currPage: 1
+  }
+};
+exports.state = state;
+
+const loadRecipe = async function (id) {
+  try {
+    // const { recipe } = data.data;
+    const data = await (0, _helpers.getJSON)(`${_config.API_URL}/${id}`);
+    console.log(data);
+    const {
+      recipe
+    } = data.data;
+    state.recipe = {
+      id: recipe.id,
+      title: recipe.title,
+      publisher: recipe.publisher,
+      sourceUrl: recipe.source_url,
+      image: recipe.image_url,
+      servings: recipe.servings,
+      cookingTime: recipe.cooking_time,
+      ingredients: recipe.ingredients
+    };
+    console.log(state.recipe); // return data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+exports.loadRecipe = loadRecipe;
+
+const loadSearchResults = async function (query) {
+  try {
+    state.search.query = query; // https://forkify-api.herokuapp.com/api/v2/recipes?search=pizza
+
+    const data = await (0, _helpers.getJSON)(`${_config.API_URL}?search=${query}`); // state.search = data.data.recipe;
+
+    state.search.results = data.data.recipes.map(res => {
+      return {
+        id: res.id,
+        title: res.title,
+        publisher: res.publisher,
+        image: res.image_url
+      };
+    });
+    console.log(state.search.results);
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}; // pagination
+
+
+exports.loadSearchResults = loadSearchResults;
+
+const getSpecificPage = function (page) {
+  state.search.currPage = page;
+  const start = (page - 1) * state.search.resultsPerPage;
+  const end = page * state.search.resultsPerPage;
+  return state.search.results.slice(start, end);
+};
+
+exports.getSpecificPage = getSpecificPage;
